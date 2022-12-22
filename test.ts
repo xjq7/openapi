@@ -1,29 +1,15 @@
 import { Controller, Param, Body, Get, Post, Put, Delete } from 'routing-controllers';
-
-@Controller()
+@Controller('/')
 export class UserController {
-  @Get('/users')
-  getAll() {
-    return 'This action returns all users';
-  }
-
+  // 修改访客保护期设置
+  // 修改访客保护期设置
+  /**
+   * 通过 project_id 批量获取项目
+   * 通过 project_id 批量获取项目
+   */
   @Get('/users/:id')
+  @Post('/users')
   getOne(@Param('id') id: number) {
     return 'This action returns user #' + id;
-  }
-
-  @Post('/users')
-  post(@Body() user: any) {
-    return 'Saving user...';
-  }
-
-  @Put('/users/:id')
-  put(@Param('id') id: number, @Body() user: any) {
-    return 'Updating a user...';
-  }
-
-  @Delete('/users/:id')
-  remove(@Param('id') id: number) {
-    return 'Removing user...';
   }
 }
