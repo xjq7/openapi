@@ -1,6 +1,12 @@
 import { Controller, Param, Body, Get, Post, Put, Delete } from 'routing-controllers';
+
+/**
+ * adsadasd
+ *
+ * @class UserController
+ */
 @Controller('/')
-export class UserController {
+export default class UserController {
   // 修改访客保护期设置
   // 修改访客保护期设置
   /**

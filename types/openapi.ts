@@ -11,4 +11,6 @@ export interface Api {
   description: string;
   bodys: Body[];
   parameters: Parameter[];
+  tags: string[];
+  name: string;
 }
