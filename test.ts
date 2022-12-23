@@ -1,8 +1,9 @@
 import { Controller, Param, Body, Get, Post, Put, Delete } from 'routing-controllers';
 
-interface B {
+interface B<T> {
   a: string;
   b: number;
+  c: B<T>;
 }
 
 /**
@@ -21,7 +22,7 @@ export default class UserController {
   @Get('/users/:id')
   @Post('/users')
   getOne(
-    @Param('id') id: number,
+    @Param('id') id: B<number>,
     @Body()
     b: {
       a: string;

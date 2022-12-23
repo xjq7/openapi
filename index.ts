@@ -17,6 +17,6 @@ async function main() {
   const ast = await commonParser.ASTparse(filePath);
 
   const traverseInstance = new RctTraverse();
-  traverseInstance.traverse([ast]);
+  const controllers = traverseInstance.traverse([ast]);
 }
 main();

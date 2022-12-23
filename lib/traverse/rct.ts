@@ -1,4 +1,4 @@
-import { File } from '@babel/types';
+import { File, TSTypeReference } from '@babel/types';
 import traverse, { NodePath } from '@babel/traverse';
 import * as t from '@babel/types';
 import _ from 'lodash';
@@ -12,8 +12,10 @@ import * as tsParser from '../parser/ts';
 type TypeType = 'plain' | 'reference';
 
 interface TypeObj {
-  name: string;
   type: TypeType;
+  reference: Dependence;
+  name: string | ITypeAnnotation;
+  parameter: ParamTypeObj[];
 }
 
 interface ParamTypeObj {
@@ -22,16 +24,26 @@ interface ParamTypeObj {
 }
 
 interface Dependence {
-  parameter: ParamTypeObj[];
   type: TypeObj;
+  name: string;
 }
 
 export default class Rct {
   private dependences: Record<string, Dependence> = {};
 
-  private controllers: any = [];
+  private controllers: IController[] = [];
 
-  private collectDependence() {}
+  private collectDependence(ast: ParseResult<File>) {
+    const _this = this;
+    traverse(ast, {
+      TSInterfaceDeclaration: {
+        enter(path) {},
+      },
+      TSTypeAliasDeclaration: {
+        enter(path) {},
+      },
+    });
+  }
 
   /**
    * controller 解析
@@ -104,17 +116,17 @@ export default class Rct {
    * @memberof Rct
    */
   t_route(path: NodePath<t.ClassMethod>) {
-    const identifier = path.node.key;
+    const { key: identifier } = path.node;
+    let { returnType } = path.node;
+
     let name = '/';
     if (t.isIdentifier(identifier)) {
       name = identifier.name;
     }
 
     let response: ITypeAnnotation = 'any';
-
-    let returnType = path.node.returnType;
     if (t.isTSTypeAnnotation(returnType)) {
-      response = tsParser.t_TSTypeAnnotation(returnType);
+      response = tsParser.t_TSTypeAnnotation(returnType.typeAnnotation);
     }
 
     const api: Route = {
@@ -164,7 +176,7 @@ export default class Rct {
   }
 
   /**
-   * 文件级别的 ast 树中提取路由信息
+   * 文件级别: ast 树中提取路由信息
    *
    * @param {ParseResult<File>[]} asts
    * @memberof Rct
@@ -174,5 +186,6 @@ export default class Rct {
     for (const ast of asts) {
       _this.t_controller(ast);
     }
+    return _this.controllers;
   }
 }

@@ -8,7 +8,7 @@ export function param(node: t.Identifier) {
 
   let type: Record<string, any> | string;
   if (t.isTSTypeAnnotation(typeAnnotation)) {
-    type = tsParser.t_TSTypeAnnotation(typeAnnotation);
+    type = tsParser.t_TSTypeAnnotation(typeAnnotation.typeAnnotation);
   }
 
   const parameters: IParam[] = [];
