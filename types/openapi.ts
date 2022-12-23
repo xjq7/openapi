@@ -1,16 +1,23 @@
-interface Route {
+interface RootRoute {
   method: string;
   path: string;
 }
 
-interface Body {}
-interface Parameter {}
+export type ParamType = 'query' | 'path' | 'body' | 'head';
 
-export interface Api {
-  routes: Route[];
+export type ITypeAnnotation = string | Record<string, any>;
+
+export interface IParam {
+  type?: ParamType;
+  name?: string;
+  typeAnnotation?: ITypeAnnotation;
+}
+
+export interface Route {
+  rootRoutes: RootRoute[];
   description: string;
-  bodys: Body[];
-  parameters: Parameter[];
+  parameters: IParam[];
+  response: ITypeAnnotation;
   tags: string[];
   name: string;
 }
