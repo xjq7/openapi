@@ -1,6 +1,7 @@
 import { Controller, Param, Body, Get, Post, Put, Delete } from 'routing-controllers';
+import { B as VBB } from './t1';
 
-interface B<T> {
+interface B<T = string> {
   a: string;
   b: number;
   c: B<T>;

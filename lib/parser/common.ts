@@ -1,6 +1,6 @@
 import * as t from '@babel/types';
 import doctrine from 'doctrine';
-import fs from 'fs/promises';
+import fs from 'fs';
 import * as parser from '@babel/parser';
 import _ from 'lodash';
 
@@ -27,8 +27,9 @@ export function comment(comments?: t.Comment[] | null): string {
  * @param {string} path
  * @return {*}
  */
-export async function ASTparse(path: string) {
-  const content = await fs.readFile(path, 'utf8');
+export function ASTparse(path: string) {
+  if (!fs.existsSync(path)) return null;
+  const content = fs.readFileSync(path, 'utf8');
   const ast = parser.parse(content, {
     sourceType: 'module',
     plugins: ['typescript', 'decorators-legacy'],
